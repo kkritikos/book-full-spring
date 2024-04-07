@@ -48,11 +48,11 @@ public class MyRestClient {
 						" and message: " + message);
 			})
 			.toEntity(String.class);
-		if (booksRep.getStatusCode().value() < 300) {
-			System.out.println("The HTTP Status Code is: " + booksRep.getStatusCode().value());
+		int code = booksRep.getStatusCode().value(); 
+		if (code < 300 && code >= 200) {
+			System.out.println("The HTTP Status Code is: " + code);
 			System.out.println("The list of books is: " + booksRep.getBody());
 		}
-		
 	}
 	
 	public void getBooksWithParams(String title, String publisher, MediaType type) {
@@ -77,9 +77,10 @@ public class MyRestClient {
 						" and message: " + message);
 			})
 			.toEntity(String.class);
-		if (booksRep.getStatusCode().value() < 300) {
-			System.out.println("The HTTP Status Code is: " + booksRep.getStatusCode().value());
-			System.out.println("The list of books is: " + booksRep.getBody()); 
+		int code = booksRep.getStatusCode().value(); 
+		if (code < 300 && code >= 200) {
+			System.out.println("The HTTP Status Code is: " + code);
+			System.out.println("The list of books is: " + booksRep.getBody());
 		}
 	}
 	
@@ -101,9 +102,10 @@ public class MyRestClient {
 						" and message: " + message);
 			})
 			.toEntity(String.class);
-		if (bookRep.getStatusCode().value() < 300) {
-			System.out.println("The HTTP Status Code is: " + bookRep.getStatusCode().value());
-			System.out.println("The book returned is: " + bookRep.getBody()); 
+		int code = bookRep.getStatusCode().value(); 
+		if (code < 300 && code >= 200) {
+			System.out.println("The HTTP Status Code is: " + code);
+			System.out.println("The book is: " + bookRep.getBody());
 		}
 	}
 	
@@ -123,77 +125,86 @@ public class MyRestClient {
 	
 	public void addBook(String isbn, MediaType type) {
 		Book book = createBook(isbn);
-		ResponseEntity<Void> resp = client.post()
+		client.post()
 			.contentType(type)
 			.body(book)
-			.retrieve()
-			.onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
-				Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-				String message = s.hasNext() ? s.next() : "";
-				System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
-						" and message: " + message);
-			})
-			.onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
-				Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-				String message = s.hasNext() ? s.next() : "";
-				System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
-						" and message: " + message);
-			})
-			.toBodilessEntity();
-		if (resp.getStatusCode().value() < 300) {
-			System.out.println("The HTTP Status Code is: " + resp.getStatusCode().value());
-			System.out.println("The book with isbn: " + isbn + " was created successfully");
-			System.out.println("The created book's URL is: " + resp.getHeaders().get("Location"));
-		}
+			.exchange(
+				(request, response) -> {
+					if (response.getStatusCode().is4xxClientError()) {
+						Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
+						String message = s.hasNext() ? s.next() : "";
+						System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
+									" and message: " + message);
+					}
+					else if (response.getStatusCode().is5xxServerError()) {
+						Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
+						String message = s.hasNext() ? s.next() : "";
+						System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
+									" and message: " + message);
+					}
+					else if (response.getStatusCode().is2xxSuccessful()) {
+						System.out.println("The HTTP Status Code is: " + response.getStatusCode().value());
+						System.out.println("The book with isbn: " + isbn + " was created successfully");
+						System.out.println("The created book's URL is: " + response.getHeaders().get("Location"));
+					}
+					return null;
+				}
+			);
 	}
 	
 	public void updateBook(String isbn, MediaType type) {
 		Book book = createBook(isbn);
 		book.setTitle("Title3");
-		ResponseEntity<Void> resp = client.put()
+		client.put()
 			.uri("/{id}",isbn)
 			.contentType(type)
 			.body(book)
-			.retrieve()
-			.onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
-				Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-				String message = s.hasNext() ? s.next() : "";
-				System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
-						" and message: " + message);
-			})
-			.onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
-				Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-				String message = s.hasNext() ? s.next() : "";
-				System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
-						" and message: " + message);
-			})
-			.toBodilessEntity();
-		if (resp.getStatusCode().value() < 300) {
-			System.out.println("The HTTP Status Code is: " + resp.getStatusCode().value());
-			System.out.println("The book with isbn: " + isbn + " has been successfully updated");
-		}
+			.exchange(
+				(request, response) -> {
+					if (response.getStatusCode().is4xxClientError()) {
+						Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
+						String message = s.hasNext() ? s.next() : "";
+						System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
+								" and message: " + message);
+					}
+					else if (response.getStatusCode().is5xxServerError()) {
+						Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
+						String message = s.hasNext() ? s.next() : "";
+						System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
+								" and message: " + message);
+					}
+					else if (response.getStatusCode().is2xxSuccessful()) {
+						System.out.println("The HTTP Status Code is: " + response.getStatusCode().value());
+						System.out.println("The book with isbn: " + isbn + " has been successfully updated");
+					}
+					return null;
+				}
+			);
 	}
 	
 	public void deleteBook(String isbn) {
-		ResponseEntity<Void> resp = client.delete()
+		client.delete()
 			.uri("/{id}",isbn)
-			.retrieve()
-			.onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
-				Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-				String message = s.hasNext() ? s.next() : "";
-				System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
-						" and message: " + message);
-			})
-			.onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
-				Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-				String message = s.hasNext() ? s.next() : "";
-				System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
-						" and message: " + message);
-			})
-			.toBodilessEntity();
-		if (resp.getStatusCode().value() < 300) {
-			System.out.println("The HTTP Status Code is: " + resp.getStatusCode().value());
-			System.out.println("The book with isbn: " + isbn + " has been successfully deleted");
-		}
+			.exchange(
+				(request, response) -> {
+					if (response.getStatusCode().is4xxClientError()) {
+						Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
+						String message = s.hasNext() ? s.next() : "";
+						System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
+								" and message: " + message);
+					}
+					else if (response.getStatusCode().is5xxServerError()) {
+						Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
+						String message = s.hasNext() ? s.next() : "";
+						System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
+								" and message: " + message);
+					}
+					else if (response.getStatusCode().is2xxSuccessful()) {
+						System.out.println("The HTTP Status Code is: " + response.getStatusCode().value());
+						System.out.println("The book with isbn: " + isbn + " has been successfully deleted");
+					}
+					return null;
+				}
+			);
 	}
 }

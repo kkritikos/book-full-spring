@@ -41,7 +41,7 @@ public class BookClientSpringApplication implements CommandLineRunner{
     	mrc.getBooksWithParams(null,"Publisher2",json);
     	
     	//Getting one book in different media types
-    	mrc.getBook(isbn1,json);
+    	mrc.getBook(isbn1,xml);
     	mrc.getBook(isbn1,json);
     	
     	//Updating one book & checking the update
