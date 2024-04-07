@@ -2,16 +2,13 @@ package gr.aegean.bookclientspring.client;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import gr.aegean.bookclientspring.configuration.ImmutableApiConfiguration;
 import gr.aegean.book.model.Book;
+import gr.aegean.bookclientspring.configuration.ImmutableApiConfiguration;
 
 @Component
 public class MyRestClient {
@@ -32,27 +29,23 @@ public class MyRestClient {
 	}
 	
 	public void getBooks(MediaType type) {
-		ResponseEntity<String> booksRep = client.get()
+		client.get()
 			.accept(type)
-			.retrieve()
-			.onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
-				Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-				String message = s.hasNext() ? s.next() : "";
-				System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
-						" and message: " + message);
-			})
-			.onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
-				Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-				String message = s.hasNext() ? s.next() : "";
-				System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
-						" and message: " + message);
-			})
-			.toEntity(String.class);
-		int code = booksRep.getStatusCode().value(); 
-		if (code < 300 && code >= 200) {
-			System.out.println("The HTTP Status Code is: " + code);
-			System.out.println("The list of books is: " + booksRep.getBody());
-		}
+			.exchange(
+				(request, response) -> {
+					if (response.getStatusCode().is4xxClientError())
+						System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
+							" and message: " + response.bodyTo(String.class));
+					else if (response.getStatusCode().is5xxServerError())
+						System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
+							" and message: " + response.bodyTo(String.class));
+					else if (response.getStatusCode().is2xxSuccessful()) {
+						System.out.println("The HTTP Status Code is: " + response.getStatusCode().value());
+						System.out.println("The list of books is: " + response.bodyTo(String.class));
+					}
+					return null;	
+				}
+			);
 	}
 	
 	public void getBooksWithParams(String title, String publisher, MediaType type) {
@@ -60,53 +53,45 @@ public class MyRestClient {
 		if (title != null && !title.isBlank()) queryPart += "title=" + title;
 		if (publisher != null && !publisher.isBlank()) queryPart += "publisher=" + publisher;
 		if (!queryPart.isBlank()) queryPart = "?" + queryPart;
-		ResponseEntity<String> booksRep = client.get()
+		client.get()
 			.uri(queryPart)
 			.accept(type)
-			.retrieve()
-			.onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
-				Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-				String message = s.hasNext() ? s.next() : "";
-				System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
-						" and message: " + message);
-			})
-			.onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
-				Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-				String message = s.hasNext() ? s.next() : "";
-				System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
-						" and message: " + message);
-			})
-			.toEntity(String.class);
-		int code = booksRep.getStatusCode().value(); 
-		if (code < 300 && code >= 200) {
-			System.out.println("The HTTP Status Code is: " + code);
-			System.out.println("The list of books is: " + booksRep.getBody());
-		}
+			.exchange(
+				(request, response) -> {
+					if (response.getStatusCode().is4xxClientError())
+						System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
+							" and message: " + response.bodyTo(String.class));
+					else if (response.getStatusCode().is5xxServerError())
+						System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
+							" and message: " + response.bodyTo(String.class));
+					else if (response.getStatusCode().is2xxSuccessful()) {
+						System.out.println("The HTTP Status Code is: " + response.getStatusCode().value());
+						System.out.println("The list of books is: " + response.bodyTo(String.class));
+					}
+					return null;	
+				}
+			);
 	}
 	
 	public void getBook(String isbn, MediaType type) {
-		ResponseEntity<String> bookRep = client.get()
+		client.get()
 			.uri("/{id}",isbn)
 			.accept(type)
-			.retrieve()
-			.onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
-				Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-				String message = s.hasNext() ? s.next() : "";
-				System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
-						" and message: " + message);
-			})
-			.onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
-				Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-				String message = s.hasNext() ? s.next() : "";
-				System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
-						" and message: " + message);
-			})
-			.toEntity(String.class);
-		int code = bookRep.getStatusCode().value(); 
-		if (code < 300 && code >= 200) {
-			System.out.println("The HTTP Status Code is: " + code);
-			System.out.println("The book is: " + bookRep.getBody());
-		}
+			.exchange(
+				(request, response) -> {
+					if (response.getStatusCode().is4xxClientError())
+						System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
+							" and message: " + response.bodyTo(String.class));
+					else if (response.getStatusCode().is5xxServerError())
+						System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
+							" and message: " + response.bodyTo(String.class));
+					else if (response.getStatusCode().is2xxSuccessful()) {
+						System.out.println("The HTTP Status Code is: " + response.getStatusCode().value());
+						System.out.println("The book with isbn: " + isbn + " is: " + response.bodyTo(String.class));
+					}
+					return null;	
+				}
+			);
 	}
 	
 	private Book createBook(String isbn) {
@@ -131,16 +116,12 @@ public class MyRestClient {
 			.exchange(
 				(request, response) -> {
 					if (response.getStatusCode().is4xxClientError()) {
-						Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-						String message = s.hasNext() ? s.next() : "";
 						System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
-									" and message: " + message);
+									" and message: " + response.bodyTo(String.class));
 					}
 					else if (response.getStatusCode().is5xxServerError()) {
-						Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-						String message = s.hasNext() ? s.next() : "";
 						System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
-									" and message: " + message);
+									" and message: " + response.bodyTo(String.class));
 					}
 					else if (response.getStatusCode().is2xxSuccessful()) {
 						System.out.println("The HTTP Status Code is: " + response.getStatusCode().value());
@@ -162,16 +143,12 @@ public class MyRestClient {
 			.exchange(
 				(request, response) -> {
 					if (response.getStatusCode().is4xxClientError()) {
-						Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-						String message = s.hasNext() ? s.next() : "";
 						System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
-								" and message: " + message);
+								" and message: " + response.bodyTo(String.class));
 					}
 					else if (response.getStatusCode().is5xxServerError()) {
-						Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-						String message = s.hasNext() ? s.next() : "";
 						System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
-								" and message: " + message);
+								" and message: " + response.bodyTo(String.class));
 					}
 					else if (response.getStatusCode().is2xxSuccessful()) {
 						System.out.println("The HTTP Status Code is: " + response.getStatusCode().value());
@@ -188,16 +165,12 @@ public class MyRestClient {
 			.exchange(
 				(request, response) -> {
 					if (response.getStatusCode().is4xxClientError()) {
-						Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-						String message = s.hasNext() ? s.next() : "";
 						System.out.println("Client error with HTTP Status Code: " + response.getStatusCode().value() +
-								" and message: " + message);
+								" and message: " + response.bodyTo(String.class));
 					}
 					else if (response.getStatusCode().is5xxServerError()) {
-						Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
-						String message = s.hasNext() ? s.next() : "";
 						System.out.println("Server error with HTTP Status Code: " + response.getStatusCode().value() +
-								" and message: " + message);
+								" and message: " + response.bodyTo(String.class));
 					}
 					else if (response.getStatusCode().is2xxSuccessful()) {
 						System.out.println("The HTTP Status Code is: " + response.getStatusCode().value());
