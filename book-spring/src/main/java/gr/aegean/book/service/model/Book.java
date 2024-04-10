@@ -1,4 +1,4 @@
-package gr.aegean.bookspring.model;
+package gr.aegean.book.service.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +17,15 @@ public class Book {
 	@NotBlank(message = "isbn cannot be blank!")
 	@Pattern(
 		regexp = "^(?:ISBN(?:-13)?:? )?(?=[0-9]{13}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)97[89][- ]?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9]$", 
-		message = "isbn is invalid"
+		message = "isbn is invalid!"
 	)
 	private String isbn = null;
 	@Basic(optional = false)
 	@NotBlank(message = "title cannot be blank!")
+	@Pattern(
+		regexp = "[A-Za-z0-9\\s]+",
+		message = "title is invalid!"
+	)
     private String title = null;
     private String category = null;
     @Basic(optional = false)
@@ -30,9 +34,9 @@ public class Book {
     private String language = null;
     private String summary = null;
     private String date = null;
-    @NotEmpty
+    @NotEmpty(message="list of authors cannot be empty!")
     @Basic(fetch = FetchType.EAGER)
-    private List<String> authors = new ArrayList<String>();
+    private List<@NotBlank(message="author name cannot be blank!") String> authors = null;
     
     public Book() {}
     
@@ -62,13 +66,19 @@ public class Book {
         	if (value == null || value.trim().equals("")) throw new IllegalArgumentException(message + " cannot be null or empty");
         }
         
-        public Builder(String isbn, String title, String publisher) throws IllegalArgumentException{
+        private static void checkListString(List<String> list, String message) throws IllegalArgumentException{
+        	if (list == null || list.isEmpty()) throw new IllegalArgumentException(message + " cannot be null or empty");
+        }
+        
+        public Builder(String isbn, String title, List<String> authors, String publisher) throws IllegalArgumentException{
         	checkSingleValue(isbn, "ISBN");
         	checkSingleValue(title, "Title");
         	checkSingleValue(publisher, "Publisher");
+        	checkListString(authors, "The list of authors");
         	
         	this.isbn = isbn;
         	this.title = title;
+        	this.authors = authors;
         	this.publisher = publisher;
         }
         
@@ -89,11 +99,6 @@ public class Book {
         
         public Builder date(String value) {
         	this.date = value;
-        	return this;
-        }
-        
-        public Builder authors(List<String> authors) {
-        	this.authors = authors;
         	return this;
         }
         
@@ -138,6 +143,7 @@ public class Book {
 	}
 
 	public void setAuthors(List<String> authors) {
+		Builder.checkListString(authors, "The list of authors");
 		this.authors = authors;
 	}
 

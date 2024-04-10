@@ -1,4 +1,4 @@
-package gr.aegean.bookclientspring.configuration;
+package gr.aegean.book_client.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.ConstructorBinding;

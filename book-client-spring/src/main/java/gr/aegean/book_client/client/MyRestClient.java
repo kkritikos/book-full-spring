@@ -1,4 +1,4 @@
-package gr.aegean.bookclientspring.client;
+package gr.aegean.book_client.client;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import gr.aegean.book.model.Book;
-import gr.aegean.bookclientspring.configuration.ImmutableApiConfiguration;
+import gr.aegean.book_client.configuration.ImmutableApiConfiguration;
 
 @Component
 public class MyRestClient {

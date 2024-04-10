@@ -16,14 +16,18 @@ public class Book {
 	private String isbn = null;
 	@NotBlank(message = "title cannot be blank!")
     private String title = null;
+	@Pattern(
+			regexp = "[A-Za-z0-9\\s]+",
+			message = "title is invalid!"
+	)
     private String category = null;
     @NotBlank(message = "publisher cannot be blank!")
     private String publisher = null;
     private String language = null;
     private String summary = null;
     private String date = null;
-    @NotEmpty
-    private List<String> authors = new ArrayList<String>();
+    @NotEmpty(message="list of authors cannot be empty!")
+    private List<@NotBlank(message="author name cannot be blank!") String> authors = null;
     
     public Book() {}
     
@@ -53,13 +57,19 @@ public class Book {
         	if (value == null || value.trim().equals("")) throw new IllegalArgumentException(message + " cannot be null or empty");
         }
         
-        public Builder(String isbn, String title, String publisher) throws IllegalArgumentException{
+        private static void checkListString(List<String> list, String message) throws IllegalArgumentException{
+        	if (list == null || list.isEmpty()) throw new IllegalArgumentException(message + " cannot be null or empty");
+        }
+        
+        public Builder(String isbn, String title, List<String> authors, String publisher) throws IllegalArgumentException{
         	checkSingleValue(isbn, "ISBN");
         	checkSingleValue(title, "Title");
         	checkSingleValue(publisher, "Publisher");
+        	checkListString(authors, "The list of authors");
         	
         	this.isbn = isbn;
         	this.title = title;
+        	this.authors = authors;
         	this.publisher = publisher;
         }
         
@@ -80,11 +90,6 @@ public class Book {
         
         public Builder date(String value) {
         	this.date = value;
-        	return this;
-        }
-        
-        public Builder authors(List<String> authors) {
-        	this.authors = authors;
         	return this;
         }
         
@@ -129,6 +134,7 @@ public class Book {
 	}
 
 	public void setAuthors(List<String> authors) {
+		Builder.checkListString(authors, "The list of authors");
 		this.authors = authors;
 	}
 

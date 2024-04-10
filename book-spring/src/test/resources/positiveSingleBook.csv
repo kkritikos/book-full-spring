@@ -1,0 +1,6 @@
+ISBN1,Title1,Author1,,Publisher1,,,,,
+ISBN2,Title1,Author1,Author2,Publisher1,,,,
+ISBN3,Title1,Author1,Author2,Publisher1,Cat1,,,
+ISBN4,Title1,Author1,Author2,Publisher1,Cat1,Summary,,
+ISBN5,Title1,Author1,Author2,Publisher1,Cat1,Summary,Lang1,,
+ISBN6,Title1,Author1,Author2,Publisher1,Cat1,Summary,Lang1,"1977-12-08"

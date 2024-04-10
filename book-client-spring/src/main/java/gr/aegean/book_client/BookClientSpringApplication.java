@@ -1,4 +1,4 @@
-package gr.aegean.bookclientspring;
+package gr.aegean.book_client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.MediaType;
 
-import gr.aegean.bookclientspring.client.MyRestClient;
-import gr.aegean.bookclientspring.configuration.ImmutableApiConfiguration;
+import gr.aegean.book_client.client.MyRestClient;
+import gr.aegean.book_client.configuration.ImmutableApiConfiguration;
 
 @SpringBootApplication
 @EnableConfigurationProperties(ImmutableApiConfiguration.class)

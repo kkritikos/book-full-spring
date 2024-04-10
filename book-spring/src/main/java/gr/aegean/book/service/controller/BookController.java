@@ -1,4 +1,4 @@
-package gr.aegean.bookspring.controller;
+package gr.aegean.book.service.controller;
 
 import java.net.InetAddress;
 import java.net.URI;
@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import gr.aegean.bookspring.model.Book;
-import gr.aegean.bookspring.repository.BookRepository;
+import gr.aegean.book.service.model.Book;
+import gr.aegean.book.service.repository.BookRepository;
 import jakarta.validation.Valid;
 
 @RestController

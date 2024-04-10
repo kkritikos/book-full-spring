@@ -1,0 +1,8 @@
+,Title1,Author1,,Publisher1,Cat1,"ISBN cannot be null or empty"
+" ",Title1,Author1,Author2,Publisher1,,"ISBN cannot be null or empty"
+ISBN1,,Author1,Author2,Publisher1,Cat1,"Title cannot be null or empty"
+ISBN1,"",Author1,Author2,Publisher1,Cat1,"Title cannot be null or empty"
+ISBN1,Title1,Author1,Author2,,Cat1,"Publisher cannot be null or empty"
+ISBN1,Title1,Author1,Author2," ",Cat1,"Publisher cannot be null or empty"
+ISBN1,Title1,,,"Publisher1",Cat1,"The list of authors cannot be null or empty"
+ISBN1,Title1,"","   ","Publisher1",Cat1,"The list of authors cannot be null or empty"
