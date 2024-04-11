@@ -21,6 +21,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     <maven-exec>1.2.1</maven-exec>
     <assembly-version>3.7.1</assembly-version>
     <surefire.version>3.2.5</surefire.version>
+    <failsafe>3.2.5</failsafe>
+    
+    <!-- deps versions -->
+    <springdoc-openapi>2.2.0</springdoc-openapi>
+    <rest-assured>5.4.0</rest-assured>
+    <junit.version>5.10.2</junit.version>
+	<junit.platform.version>1.10.2</junit.platform.version>
     
     <java.version>21</java.version>
   </properties>
@@ -52,6 +59,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 			<artifactId>maven-surefire-plugin</artifactId>
 			<version>${surefire.version}</version>
 		</plugin>
+		<plugin>
+        	<groupId>org.apache.maven.plugins</groupId>
+        	<artifactId>maven-failsafe-plugin</artifactId>
+        	<version>${failsafe}</version>
+        </plugin>
 	<plugin>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-maven-plugin</artifactId>
@@ -71,8 +83,44 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
   		<dependency>
     		<groupId>org.springdoc</groupId>
     		<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-    		<version>2.2.0</version>
+    		<version>${springdoc-openapi}</version>
 		</dependency>
+		<dependency>
+    		<groupId>io.rest-assured</groupId>
+    		<artifactId>spring-mock-mvc</artifactId>
+    		<version>${rest-assured}</version>
+    		<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+	      <artifactId>junit-jupiter</artifactId>
+	      <version>${junit.version}</version>
+	      <scope>test</scope>
+      	</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+	      <artifactId>junit-jupiter-engine</artifactId>
+	      <version>${junit.version}</version>
+	      <scope>test</scope>
+      	</dependency>
+      	<dependency>
+	      <groupId>org.junit.jupiter</groupId>
+	      <artifactId>junit-jupiter-params</artifactId>
+	      <version>${junit.version}</version>
+	      <scope>test</scope>
+      	</dependency>
+      	<dependency>
+	      <groupId>org.junit.platform</groupId>
+	      <artifactId>junit-platform-suite-api</artifactId>
+	      <version>${junit.platform.version}</version>
+	      <scope>test</scope>
+      	</dependency>
+      	<dependency>
+	      <groupId>org.junit.platform</groupId>
+	      <artifactId>junit-platform-runner</artifactId>
+	      <version>${junit.platform.version}</version>
+	      <scope>test</scope>
+      </dependency>
   	</dependencies>
   </dependencyManagement>
   

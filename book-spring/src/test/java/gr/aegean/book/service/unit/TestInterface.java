@@ -1,4 +1,4 @@
-package gr.aegean.book.service;
+package gr.aegean.book.service.unit;
 
 import java.util.logging.Logger;
 

@@ -1,4 +1,4 @@
-package gr.aegean.book.service;
+package gr.aegean.book.service.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

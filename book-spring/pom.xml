@@ -17,6 +17,27 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-failsafe-plugin</artifactId>
+		        <configuration>
+					<classesDirectory>${project.build.outputDirectory}</classesDirectory>
+				</configuration>
+		        <executions>
+		          <execution>
+		            <id>perform-it</id>
+		            <goals>
+		              <goal>integration-test</goal>
+		            </goals>
+		          </execution>
+		          <execution>
+		            <id>verify-it</id>
+		            <goals>
+		              <goal>verify</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+      		</plugin>
 		</plugins>
 	</build>
 
@@ -39,10 +60,26 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+    	<dependency>
+      		<groupId>org.junit.platform</groupId>
+      		<artifactId>junit-platform-suite-api</artifactId>
+      		<scope>test</scope>
+    	</dependency>
+    	<dependency>
+	      <groupId>org.junit.jupiter</groupId>
+	      <artifactId>junit-jupiter-params</artifactId>
+	      <scope>test</scope>
+      	</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+    		<groupId>io.rest-assured</groupId>
+    		<artifactId>spring-mock-mvc</artifactId>
+    		<scope>test</scope>
 		</dependency>
 		<dependency>
     		<groupId>org.springdoc</groupId>
