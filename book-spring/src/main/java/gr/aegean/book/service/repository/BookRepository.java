@@ -3,7 +3,6 @@ package gr.aegean.book.service.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import gr.aegean.book.service.model.Book;
 

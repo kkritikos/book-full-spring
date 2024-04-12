@@ -24,13 +24,11 @@ import gr.aegean.book.service.repository.BookRepository;
 @TestMethodOrder(org.junit.jupiter.api.MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
 public class DBTest implements TestInterface{
-	/* Checking multiple positive cases for book creation through its Builder interface
-	 * Along with the Storage & Retrieval from DB
-	 */
-	
+
 	@Autowired
 	BookRepository repo;
 	
+	/* Checking book insertion positive cases */
 	@ParameterizedTest
 	@Order(5)
 	@CsvFileSource(resources="/positiveSingleBook.csv")
@@ -38,12 +36,11 @@ public class DBTest implements TestInterface{
 		Book book = BookUtility.createPositiveBook(accessor,0);
 		repo.save(book);
 		book = repo.findById(accessor.getString(0)).orElse(null);
+		assertNotNull(book);
 		BookUtility.checkBook(book,accessor);
 	}
 	
-	/* Checking book deletion positive cases
-	 * 
-	 */
+	/* Checking book deletion positive cases */
 	@ParameterizedTest
 	@Order(2)
 	@CsvSource({
