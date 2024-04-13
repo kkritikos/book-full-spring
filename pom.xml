@@ -87,7 +87,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 		</dependency>
 		<dependency>
     		<groupId>io.rest-assured</groupId>
-    		<artifactId>spring-mock-mvc</artifactId>
+    		<artifactId>rest-assured</artifactId>
     		<version>${rest-assured}</version>
     		<scope>test</scope>
 		</dependency>

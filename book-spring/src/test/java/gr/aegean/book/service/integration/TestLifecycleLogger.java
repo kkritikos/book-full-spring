@@ -10,10 +10,18 @@ import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import static io.restassured.RestAssured.baseURI;
+
 @TestInstance(Lifecycle.PER_CLASS)
 public interface TestLifecycleLogger {
 
     static final Logger logger = Logger.getLogger(TestLifecycleLogger.class.getName());
+    
+    @BeforeAll
+	public static void setup() {
+		// Setting BaseURI once
+		baseURI = "http://localhost:8080";
+	}
 
     @BeforeAll
     default void beforeAllTests() {

@@ -1,21 +1,13 @@
 package gr.aegean.book.service.integration;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.web.context.WebApplicationContext;
-
 import gr.aegean.book.service.model.Book;
 import io.restassured.common.mapper.TypeRef;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
 
 import org.junit.jupiter.api.Order;
 
@@ -28,23 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 /**
  * Tests the Web application, by checking that the index page returns a code 200.
  */
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @DisplayName("Adding Book Testing")
 @TestMethodOrder(OrderAnnotation.class)
 public class SecondIT implements TestLifecycleLogger{
-	@Autowired
-	private WebApplicationContext webApplicationContext;
-
-	@BeforeAll
-	public void initialiseRestAssuredMockMvcWebApplicationContext() {
-	    RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
-	}
 	
 	 @Test
 	    @Order(1)
