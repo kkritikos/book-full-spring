@@ -33,13 +33,6 @@ public class FirstIT implements TestLifecycleLogger{
 	public void initialiseRestAssuredMockMvcWebApplicationContext() {
 	    RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
 	}
-	
-	/*@BeforeAll
-	public void setup() {
-		// Setting BaseURI once
-		baseURI = "http://localhost:8080";
-		// Setting BasePath once
-	}*/
     
     @Test
     @Order(1)

@@ -94,7 +94,7 @@ public class SecondIT implements TestLifecycleLogger{
 	    }
 	    
 	    @Test
-	    @Order(8)
+	    @Order(5)
 	    public void getExistingBooks() throws Exception{
 	    	List<Book> books = given().accept("application/json").get("/api/books").then().assertThat().statusCode(200).
 	    			extract().as(new TypeRef<List<Book>>(){});
@@ -106,7 +106,7 @@ public class SecondIT implements TestLifecycleLogger{
 	    }
 	    
 	    @ParameterizedTest
-	    @Order(9)
+	    @Order(6)
 	    @ValueSource(strings = {"11", "12", "15", "19"})
 	    public void useWrongPublisher(String publisherId) {
 	    	given().accept("application/json").param("publisher","Publisher" + publisherId).get("/api/books").then().
