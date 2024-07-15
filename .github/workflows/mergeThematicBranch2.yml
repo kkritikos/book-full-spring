@@ -6,7 +6,7 @@ on:
     branches-ignore:
       - master
       - develop
-  workflow_dispatch:
+  #workflow_dispatch:
 
 permissions:
   contents: write  # Adjust permissions as needed
