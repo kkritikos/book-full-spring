@@ -3,10 +3,10 @@ run-name: Commit ${{ github.sha }} of branch ${{ github.ref}} by @${{ github.act
 
 on:
   push:
+    branches:
+      - develop
     branches-ignore:
       - master
-      - develop
-  #workflow_dispatch:
 
 permissions:
   contents: write  # Adjust permissions as needed
@@ -26,27 +26,6 @@ jobs:
 
       - name: Compile and Test
         run: mvn clean verify
-
-  merge-to-develop:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Git user
-        run: |
-          git config --global user.name 'Kyriakos Kritikos'
-          git config --global user.email 'domcretan@gmail.com'
-
-      - name: Merge branch into develop
-        run: |
-          git fetch origin
-          git checkout develop
-          git merge --no-edit --allow-unrelated-histories origin/${{ github.ref_name }}
-          git push origin develop
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create-release:
     needs: merge-to-develop
