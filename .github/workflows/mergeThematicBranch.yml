@@ -48,7 +48,7 @@ jobs:
 
       - name: Merge branch into develop
         run: |
-          git fetch origin ${{ github.ref_name }}
+          git fetch origin
           git checkout -b temp-branch origin/${{ github.ref_name }}
           git checkout develop
           git merge --no-ff --no-edit temp-branch
