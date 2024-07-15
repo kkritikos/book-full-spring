@@ -44,7 +44,7 @@ jobs:
           git fetch origin
           git checkout -b temp-branch origin/${{ github.ref_name }}
           git checkout develop
-          git merge --no-ff --no-edit temp-branch
+          git merge --no-edit temp-branch
           git push origin develop
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
