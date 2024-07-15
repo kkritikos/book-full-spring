@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>book-spring</artifactId>
 	<name>book-spring</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Book service realised in Spring Boot</description>
 	
 	<build>
 		<plugins>
