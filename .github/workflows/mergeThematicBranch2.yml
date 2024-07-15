@@ -30,8 +30,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: develop
 
       - name: Set up Git user
         run: |
@@ -45,6 +43,8 @@ jobs:
           git checkout develop
           git merge --no-ff --no-edit temp-branch
           git push origin develop
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create-release:
     needs: merge-to-develop
