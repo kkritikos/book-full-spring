@@ -38,8 +38,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          ref: develop
 
       - name: Set up Git user
         run: |
@@ -49,7 +47,7 @@ jobs:
       - name: Merge branch into develop
         run: |
           git fetch origin
-          git checkout -b temp-branch origin/${{ github.ref_name }}
+          git checkout -b temp-branch ${{ github.ref }}
           git checkout develop
           git merge --no-ff --no-edit temp-branch
           git push origin develop
