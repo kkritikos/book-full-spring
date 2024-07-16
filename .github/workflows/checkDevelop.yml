@@ -22,9 +22,9 @@ jobs:
           java-version: '21'
           distribution: 'adopt'
 
-      - name: Compile and Unit Test
+      - name: Compile, Unit Test and Install
         id: unit-tests
-        run: mvn clean test
+        run: mvn clean install
 
       - name: Upload test reports
         if: always() && steps.unit-tests.outcome == 'success'
