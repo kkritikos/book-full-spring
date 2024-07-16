@@ -5,9 +5,7 @@ on:
   push:
     branches:
       - develop
-    branches-ignore:
-      - master
-
+    
 permissions:
   contents: write  # Adjust permissions as needed
 
