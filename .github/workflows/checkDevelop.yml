@@ -22,8 +22,27 @@ jobs:
           java-version: '21'
           distribution: 'adopt'
 
-      - name: Compile and Test
-        run: mvn clean verify
+      - name: Compile and Unit Test
+        id: unit-tests
+        run: mvn clean test
+
+      - name: Upload test reports
+        if: always() && steps.unit-tests.outcome == 'success'
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports
+          path: **/target/surefire-reports/*.xml
+
+      - name: Integration Test
+        id: integration-tests
+        run: mvn failsafe:integration test
+
+      - name: Upload integration test reports
+        if: always() && steps.integration-tests.outcome == 'success'
+        uses: actions/upload-artifact@v3
+        with:
+          name: integration-test-reports
+          path: **/target/failsafe-reports/*.xml
 
   create-release:
     needs: build-and-test
@@ -41,7 +60,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Compile
-        run: mvn clean package
+        run: mvn clean package -DskipTests
 
       - name: Create GitHub Release
         id: create_release
