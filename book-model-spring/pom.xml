@@ -12,9 +12,7 @@
   <artifactId>book-model-spring</artifactId>
 
   <name>book</name>
-  <description>A simple book.</description>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <description>Book domain model</description>
   
   <dependencies>
   	<dependency>
