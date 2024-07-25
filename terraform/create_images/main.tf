@@ -77,7 +77,7 @@ resource "aws_instance" "app" {
               git clone ${var.spring_boot_app_git_repo} /home/ubuntu/app
               cd /home/ubuntu/app
               git fetch
-              git checkout ${var.git_repo_branch}
+              git checkout -b ${var.git_repo_branch} origin/${var.git_repo_branch}
               mvn clean package
               touch /tmp/user_data_complete
               EOF

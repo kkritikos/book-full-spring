@@ -25,6 +25,7 @@ resource "aws_instance" "app" {
   ami           = data.terraform_remote_state.images.outputs.app_ami_id
   instance_type = var.instance_type_app
   key_name      = var.key_name
+  vpc_security_group_ids = [aws_security_group.app_sg.id]
   tags = {
     Name = "spring-boot-app-${count.index}"
   }
@@ -35,8 +36,9 @@ resource "aws_instance" "app" {
               export DB_NAME=${var.db_name}
               export DB_USER=${var.db_user}
               export DB_PASSWORD=${var.db_password}
-              cd /home/ubuntu/app
-              java -jar target/${var.jar_name}.jar
+              cd /home/ubuntu/app/book-spring
+              nohup java -jar target/${var.jar_name}.jar > /var/log/spring-boot-app.log 2>&1 &
+              echo "User data script executed at $(date)" >> /var/log/user-data.log
               EOF
 
   count = 2
@@ -57,7 +59,7 @@ resource "aws_lb_target_group" "app_tg" {
   vpc_id      = var.vpc_id
   target_type = "instance"
   health_check {
-    path                = "/health"
+    path                = "/api/books"
     interval            = 30
     timeout             = 5
     healthy_threshold   = 5
@@ -120,7 +122,34 @@ resource "aws_security_group" "db_sg" {
   ingress{
     from_port   = 22
     to_port     = 22
-    protocol    = "ssh"
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+}
+
+resource "aws_security_group" "app_sg" {
+  name   = "app-security-group"
+  vpc_id = var.vpc_id
+
+  ingress{
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
+  ingress{
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
