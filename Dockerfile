@@ -31,13 +31,18 @@ RUN mvn -B clean package -DskipTests
 
 # Stage 2: Create a minimal runtime image
 FROM eclipse-temurin:21-alpine@sha256:b5d37df8ee5bb964bb340acca83957f9a09291d07768fba1881f6bfc8048e4f5 AS runtime
+
+# Set a non-root user for security reasons
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Create working directory
+RUN mkdir /app && chown -R appuser:appgroup /app
 WORKDIR /app
 
 # Copy the JAR file built in the previous stage
-COPY --from=build /app/book-spring/target/book-spring-0.1.jar .
+COPY --from=build --chown=appuser:appuser /app/book-spring/target/book-spring-0.1.jar .
 
-# Set a non-root user for security reasons
-RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+# Change to non-root user
 USER appuser
 
 # Expose the port your application listens on
