@@ -5,9 +5,9 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "80:8080"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/api/books"]
+      test: ["CMD", "curl", "-f", "http://localhost/api/books"]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -37,7 +37,7 @@ services:
       mysql: 
         condition: service_healthy                
   mysql:
-    image: "mysql:latest"
+    image: "mysql:8.3.0"
     ports:
       - "3306"
     healthcheck:
