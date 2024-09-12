@@ -1,5 +1,5 @@
 docker network create book-net
-docker run -d --name mysql --network book-net --network-alias mysql -v mysql:/var/lib/mysql -e MYSQL_RANDOM_ROOT_PASSWORD=yes -e MYSQL_USER=book -e MYSQL_PASSWORD=book1234 -e MYSQL_DATABASE=books mysql:latest
+docker run -d --name mysql --network book-net --network-alias mysql -v mysql:/var/lib/mysql -e MYSQL_RANDOM_ROOT_PASSWORD=yes -e MYSQL_USER=book -e MYSQL_PASSWORD=book1234 -e MYSQL_DATABASE=books mysql:8.3.0
 
 @echo off
 :retry
