@@ -5,7 +5,7 @@ metadata:
   labels:
     app: book #label to find the respective pods to manage
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: book
@@ -30,7 +30,7 @@ spec:
              secretKeyRef:
                name: user-secret
                key: password
-         - name: DB_HOST #pass previous environment vars as system properties to tomcat
+         - name: DB_HOST
            value: "mysql"
          - name: DB_NAME
            value: "books"
