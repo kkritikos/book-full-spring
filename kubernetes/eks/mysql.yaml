@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-ss
+  namespace: book
+  labels:
+    app: mysql #label to find the respective pods to manage
+spec:
+  serviceName: "mysql"
+  replicas: 1 #create 1 replicas
+  selector:
+    matchLabels:
+      app: mysql #select mysql app
+  template: #template for the replica/pod specification
+    metadata:
+      labels:
+        app: mysql #label for the corresponding app
+    spec: #replica spec part
+      containers:
+        - name: mysql #container name
+          image: mysql:8.3.0 #container image
+          env:
+           - name: MYSQL_RANDOM_ROOT_PASSWORD
+             value: "yes"
+           - name: MYSQL_DATABASE
+             value: "books"
+           - name: MYSQL_USER
+             valueFrom:
+               secretKeyRef:
+                 name: user-secret
+                 key: username
+           - name: MYSQL_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: user-secret
+                 key: password
+          ports:
+            - containerPort: 3306 #container port
+          volumeMounts: #mounting of a volume
+            - name: mysql-vol
+              mountPath: /var/lib/mysql
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1"
+            limits:
+              memory: "4Gi"
+              cpu: "2"
+      volumes:
+        - name: mysql-vol
+          persistentVolumeClaim:
+            claimName: mysql-claim 
