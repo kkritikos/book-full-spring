@@ -66,7 +66,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: dev-pre-release
+          tag_name: "dev-pre-release-${{ github.sha }}"
           release_name: "Release ${{ github.sha }}"
           body: "Automatically generated release from ${{ github.sha }}"
           draft: false
@@ -126,6 +126,6 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+          subject-name: kkritikos/book-spring-rest
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
