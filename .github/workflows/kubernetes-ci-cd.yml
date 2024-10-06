@@ -100,6 +100,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
+          registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -126,6 +127,6 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: kkritikos/book-spring-rest
+          subject-name: docker.io/kkritikos/book-spring-rest
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
