@@ -51,9 +51,10 @@ resource "null_resource" "wait_for_minikube_instance" {
       
       "git clone https://github.com/kkritikos/book-full-spring.git",
 	  "cd book-full-spring",
-	  "git checkout kubernetes",
+	  "git checkout kubernetes-ci-cd",
 	  "echo 'Repo cloned & branch checked out!'",
 	
+	  "sudo -u ubuntu minikube kubectl -p test -- apply -f 'kubernetes/keel.yaml'",
       "sudo -u ubuntu minikube kubectl -p test -- apply -f 'kubernetes/minikube/*.yaml'",
       #"sudo -u ubuntu nohup minikube tunnel -p test &",
       "touch /tmp/app_depl_complete"

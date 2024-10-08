@@ -38,6 +38,10 @@ resource "null_resource" "wait_for_minikube" {
 resource "null_resource" "apply_manifests" {
   depends_on = [null_resource.wait_for_minikube]
 
+  provisioner "local-exec" {
+    # Apply Keel manifest file
+    command = "kubectl apply -f ${var.keel_path}"
+  }
 
   # Use for_each to loop through each manifest file
   for_each = fileset(var.path, "*.yaml")
