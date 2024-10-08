@@ -137,3 +137,27 @@ resource "aws_eks_addon" "ebs_csi_driver" {
   addon_name   = "aws-ebs-csi-driver"
   service_account_role_arn = aws_iam_role.ebs_csi_role.arn  # Update with your IAM role ARN
 }
+
+resource "helm_release" "keel" {
+  name       = "keel"
+  repository = "https://charts.keel.sh"
+  chart      = "keel"
+  version    = "1.0.3"  # Specify the desired version of Keel
+  namespace  = "keel"
+  create_namespace = true
+
+  set {
+    name  = "helmProvider.enabled"
+    value = "false"  # Adjust according to your needs (e.g., LoadBalancer)
+  }
+
+  set {
+    name  = "service.enabled"
+    value = "true"  # Adjust according to your needs (e.g., LoadBalancer)
+  }
+  
+  set {
+    name  = "webhook.enabled"
+    value = "true"  # Adjust according to your needs (e.g., LoadBalancer)
+  }
+}

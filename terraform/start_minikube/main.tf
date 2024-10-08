@@ -44,7 +44,7 @@ resource "null_resource" "apply_manifests" {
       helm repo add keel https://charts.keel.sh
       helm repo update
       kubectl create namespace keel
-      helm upgrade --install keel --namespace=keel keel/keel --set helmProvider.enabled="false" 
+      helm upgrade --install keel --namespace=keel keel/keel --set helmProvider.enabled="false" --set service.enabled="true"
     EOT
   }
 

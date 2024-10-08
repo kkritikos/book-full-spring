@@ -1,7 +1,3 @@
-resource "kubernetes_manifest" "keel_manifest"{
-  manifest = yamldecode(file("../../kubernetes/keel.yaml"))
-}
-
 resource "kubernetes_namespace" "book" {
   metadata {
     name = "book"
