@@ -40,7 +40,12 @@ resource "null_resource" "apply_manifests" {
 
   provisioner "local-exec" {
     # Apply Keel manifest file
-    command = "kubectl apply -f ${var.keel_path}"
+    command = <<EOT
+      helm repo add keel https://charts.keel.sh
+      helm repo update
+      kubectl create namespace keel
+      helm upgrade --install keel --namespace=keel keel/keel --set helmProvider.enabled="false" 
+    EOT
   }
 
   # Use for_each to loop through each manifest file
