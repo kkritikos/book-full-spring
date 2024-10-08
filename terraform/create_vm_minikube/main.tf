@@ -26,6 +26,8 @@ resource "aws_instance" "minikube" {
               tar -xvf  helm-v3.12.0-linux-amd64.tar.gz
               sudo mv linux-amd64  /usr/local/bin
               rm helm-v3.12.0-linux-amd64.tar.gz
+              helm repo add keel https://charts.keel.sh
+      		  helm repo update
                   
               touch /tmp/docker_minikube_installed	
               EOT
@@ -61,6 +63,8 @@ resource "null_resource" "wait_for_minikube_instance" {
 	
 	  "sudo -u ubuntu minikube kubectl -p test -- apply -f 'kubernetes/keel.yaml'",
       "sudo -u ubuntu minikube kubectl -p test -- apply -f 'kubernetes/minikube/*.yaml'",
+      "sudo -u ubuntu minikube kubectl -p test -- create namespace keel",
+      "helm upgrade --install keel --namespace=keel keel/keel --set helmProvider.enabled=\"false\"",
       #"sudo -u ubuntu nohup minikube tunnel -p test &",
       "touch /tmp/app_depl_complete"
     ]
