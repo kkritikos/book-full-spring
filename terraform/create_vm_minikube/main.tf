@@ -24,8 +24,9 @@ resource "aws_instance" "minikube" {
               
               wget https://get.helm.sh/helm-v3.12.0-linux-amd64.tar.gz
               tar -xvf  helm-v3.12.0-linux-amd64.tar.gz
-              sudo mv linux-amd64  /usr/local/bin
+              sudo mv linux-amd64/helm  /usr/local/bin
               rm helm-v3.12.0-linux-amd64.tar.gz
+              rm -rf linux-amd64
               helm repo add keel https://charts.keel.sh
       		  helm repo update
                   
@@ -61,10 +62,9 @@ resource "null_resource" "wait_for_minikube_instance" {
 	  "git checkout kubernetes-ci-cd",
 	  "echo 'Repo cloned & branch checked out!'",
 	
-	  "sudo -u ubuntu minikube kubectl -p test -- apply -f 'kubernetes/keel.yaml'",
+	  "sudo -u ubuntu minikube kubectl -p test -- create namespace keel",
+	  "helm upgrade --install keel --namespace=keel keel/keel --set helmProvider.enabled=\"false\" --set service.enabled=\"true\"",
       "sudo -u ubuntu minikube kubectl -p test -- apply -f 'kubernetes/minikube/*.yaml'",
-      "sudo -u ubuntu minikube kubectl -p test -- create namespace keel",
-      "helm upgrade --install keel --namespace=keel keel/keel --set helmProvider.enabled=\"false\"",
       #"sudo -u ubuntu nohup minikube tunnel -p test &",
       "touch /tmp/app_depl_complete"
     ]
@@ -108,6 +108,13 @@ resource "aws_security_group" "minikube_sg" {
     to_port     = 8443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]  # Allow access to Minikube API (Change CIDR for security)
+  }
+  
+  ingress {
+    from_port   = 9300
+    to_port     = 9300
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Allow access to Keel (Change CIDR for security)
   }
 
   egress {
