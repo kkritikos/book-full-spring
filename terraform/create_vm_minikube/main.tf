@@ -21,6 +21,11 @@ resource "aws_instance" "minikube" {
               curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
               chmod +x minikube
               sudo install minikube /usr/local/bin/
+              
+              wget https://get.helm.sh/helm-v3.12.0-linux-amd64.tar.gz
+              tar -xvf  helm-v3.12.0-linux-amd64.tar.gz
+              sudo mv linux-amd64  /usr/local/bin
+              rm helm-v3.12.0-linux-amd64.tar.gz
                   
               touch /tmp/docker_minikube_installed	
               EOT
