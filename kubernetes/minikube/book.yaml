@@ -4,7 +4,8 @@ metadata:
   name: book #Deployment name
   labels:
     app: book #label to find the respective pods to manage
-    keel.sh/policy: all
+    keel.sh/policy: force
+    keel.sh/match-tag: "true"
     keel.sh/trigger: poll
     keel.sh/pollSchedule: "1m"
 spec:
