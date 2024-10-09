@@ -39,7 +39,7 @@ resource "null_resource" "apply_manifests" {
   depends_on = [null_resource.wait_for_minikube]
 
   provisioner "local-exec" {
-    # Apply Keel manifest file
+    # Install Keel via Helm 
     command = <<EOT
       helm repo add keel https://charts.keel.sh
       helm repo update
