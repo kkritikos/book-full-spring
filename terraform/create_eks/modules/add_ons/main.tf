@@ -148,16 +148,6 @@ resource "helm_release" "keel" {
 
   set {
     name  = "helmProvider.enabled"
-    value = "false"  # Adjust according to your needs (e.g., LoadBalancer)
-  }
-
-  set {
-    name  = "service.enabled"
-    value = "true"  # Adjust according to your needs (e.g., LoadBalancer)
-  }
-  
-  set {
-    name  = "webhook.enabled"
-    value = "true"  # Adjust according to your needs (e.g., LoadBalancer)
+    value = "false"
   }
 }

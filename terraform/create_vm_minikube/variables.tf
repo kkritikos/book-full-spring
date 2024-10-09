@@ -27,9 +27,3 @@ variable "path" {
   type        = string
   default     = "book-full-spring/kubernetes/minikube"
 }
-
-variable "keel_path" {
-  description = "Path to the Keel's YAML file"
-  type        = string
-  default     = "book-full-spring/kubernetes/keel.yaml"
-}

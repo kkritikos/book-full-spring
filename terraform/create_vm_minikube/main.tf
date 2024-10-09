@@ -63,7 +63,7 @@ resource "null_resource" "wait_for_minikube_instance" {
 	  "echo 'Repo cloned & branch checked out!'",
 	
 	  "sudo -u ubuntu minikube kubectl -p test -- create namespace keel",
-	  "helm upgrade --install keel --namespace=keel keel/keel --set helmProvider.enabled=\"false\" --set service.enabled=\"true\"",
+	  "helm upgrade --install keel --namespace=keel keel/keel --set helmProvider.enabled=\"false\"",
       "sudo -u ubuntu minikube kubectl -p test -- apply -f 'kubernetes/minikube/*.yaml'",
       #"sudo -u ubuntu nohup minikube tunnel -p test &",
       "touch /tmp/app_depl_complete"
