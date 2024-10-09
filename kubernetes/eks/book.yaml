@@ -21,6 +21,7 @@ spec:
       containers:
       - name: book #container name
         image: kkritikos/book-spring-rest:1.0.0 #container image
+        imagePullPolicy: Always
         ports:
         - containerPort: 30000 #container port
         env: #get environment vars from specific secret
